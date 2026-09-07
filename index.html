@@ -333,8 +333,8 @@
 const starterRecipes = [
   {
     "id": "kombucha",
-    "title": "Комбуча",
-    "author": "Мамин рецепт",
+    "title": "Чайный гриб а-ка Комбуча",
+    "author": "Рецепт Олиной мамы",
     "category": "Напитки",
     "time": "3–5 дней",
     "icon": "◌",
@@ -357,7 +357,7 @@ const starterRecipes = [
   {
     "id": "plov-babtanya",
     "title": "Плов от БабТани",
-    "author": "БабТаня",
+    "author": "Баба Таня",
     "category": "Горячее",
     "time": "≈ 1,5 часа",
     "icon": "✺",
@@ -392,7 +392,7 @@ const starterRecipes = [
   },
   {
     "id": "cocoa",
-    "title": "Какао, которого хватает до обеда",
+    "title": "Какао",
     "author": "Семейный рецепт",
     "category": "Напитки",
     "time": "10 минут",
@@ -416,7 +416,7 @@ const starterRecipes = [
   {
     "id": "borscht",
     "title": "БабТанин борщ",
-    "author": "БабТаня",
+    "author": "Баба Таня",
     "category": "Супы",
     "time": "полдня",
     "icon": "◒",
@@ -501,8 +501,8 @@ const starterRecipes = [
   },
   {
     "id": "napoleon-babtanya",
-    "title": "Наполеон БабТани с кремом Шарлотт",
-    "author": "БабТаня",
+    "title": "Наполеон с кремом Шарлотт",
+    "author": "Баба Таня",
     "category": "Десерты",
     "time": "несколько часов",
     "icon": "♕",
@@ -543,8 +543,8 @@ const starterRecipes = [
   },
   {
     "id": "bliny-deda",
-    "title": "Блины деда",
-    "author": "Дед",
+    "title": "Блины Деда Вити",
+    "author": "Деда Витя",
     "category": "Завтраки",
     "time": "≈ 40 минут",
     "icon": "☼",
@@ -573,8 +573,8 @@ const starterRecipes = [
   },
   {
     "id": "grafsky-napoleon",
-    "title": "Графский Наполеон Владика",
-    "author": "Владик",
+    "title": "Графский Наполеон",
+    "author": "Друг деда Владича",
     "category": "Десерты",
     "time": "≈ 7 часов",
     "icon": "♜",
@@ -611,8 +611,8 @@ const starterRecipes = [
   },
   {
     "id": "vareniki-olya",
-    "title": "Ейские вареники Оли",
-    "author": "Оля",
+    "title": "Кубанские вареники",
+    "author": "Оля Карих",
     "category": "Горячее",
     "time": "≈ 1,5 часа",
     "icon": "◇",
@@ -643,8 +643,8 @@ const starterRecipes = [
   },
   {
     "id": "blinchiki-olya",
-    "title": "Блинчики по-ейски от Оли",
-    "author": "Оля",
+    "title": "Блинчики по-ей/липецки",
+    "author": "Оля Карих",
     "category": "Завтраки",
     "time": "≈ 1 час",
     "icon": "❋",
@@ -676,7 +676,7 @@ const starterRecipes = [
   {
     "id": "oladushki-olya",
     "title": "Творожные оладушки от Оли",
-    "author": "Оля",
+    "author": "Оля Карих",
     "category": "Завтраки",
     "time": "20 минут",
     "icon": "○",
@@ -702,7 +702,7 @@ const starterRecipes = [
   {
     "id": "stuffed-peppers",
     "title": "Фаршированные перцы",
-    "author": "Семейный рецепт",
+    "author": "Оля Карих",
     "category": "Горячее",
     "time": "≈ 1,5 часа",
     "icon": "✧",
@@ -737,7 +737,7 @@ const starterRecipes = [
   {
     "id": "herring",
     "title": "Селёдка с луком",
-    "author": "Семейный рецепт",
+    "author": "Баба Таня",
     "category": "Закуски",
     "time": "15 минут + холод",
     "icon": "≈",
@@ -799,6 +799,7 @@ const starterRecipes = [
 ];
 
 const STORAGE_KEY = "familyRecipeBook_v5";
+const META_MIGRATION_KEY = "familyRecipeBook_titles_authors_20260907";
 let storageAvailable = true;
 let recipes = loadRecipes();
 let activeCategory = "Все";
@@ -819,13 +820,20 @@ function loadRecipes(){
     const raw = safeGet(STORAGE_KEY);
     const saved = raw ? JSON.parse(raw) : null;
     if(Array.isArray(saved) && saved.length){
-      const knownIds=new Set(saved.map(recipe=>recipe.id));
-      const merged=[...saved,...starterRecipes.filter(recipe=>!knownIds.has(recipe.id))];
-      safeSet(STORAGE_KEY,JSON.stringify(merged));
+      let current=saved;
+      const needsMetaMigration=!safeGet(META_MIGRATION_KEY);
+      if(needsMetaMigration){
+        const canonicalMeta=new Map(starterRecipes.map(recipe=>[recipe.id,{title:recipe.title,author:recipe.author}]));
+        current=saved.map(recipe=>canonicalMeta.has(recipe.id)?{...recipe,...canonicalMeta.get(recipe.id)}:recipe);
+      }
+      const knownIds=new Set(current.map(recipe=>recipe.id));
+      const merged=[...current,...starterRecipes.filter(recipe=>!knownIds.has(recipe.id))];
+      const persisted=safeSet(STORAGE_KEY,JSON.stringify(merged));
+      if(persisted && needsMetaMigration) safeSet(META_MIGRATION_KEY,"1");
       return merged;
     }
   }catch(e){}
-  safeSet(STORAGE_KEY, JSON.stringify(starterRecipes));
+  if(safeSet(STORAGE_KEY,JSON.stringify(starterRecipes))) safeSet(META_MIGRATION_KEY,"1");
   return JSON.parse(JSON.stringify(starterRecipes));
 }
 function saveRecipes(){ return safeSet(STORAGE_KEY, JSON.stringify(recipes)); }
