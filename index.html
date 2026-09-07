@@ -3,20 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#d4cfcf" />
+  <meta name="theme-color" content="#8f2f24" />
   <title>Наша семейная книга рецептов</title>
   <style>
     :root{
-      --bg:#e9e6e6;
-      --paper:#fbfaf8;
-      --ink:#303746;
-      --muted:#687083;
-      --accent:#798aae;
-      --accent-2:#c3cee5;
-      --line:#d4cfcf;
-      --sage:#707d56;
-      --sand:#d1c4a8;
-      --shadow:0 14px 40px rgba(58,66,84,.10);
+      --bg:#f1e2c5;
+      --paper:#fff9eb;
+      --ink:#3f2b20;
+      --muted:#755d4e;
+      --accent:#a83b2d;
+      --accent-2:#e7bd77;
+      --line:#d8bd8c;
+      --sage:#56613b;
+      --sand:#ead3a4;
+      --blue:#2f5f8d;
+      --shadow:0 14px 40px rgba(92,52,26,.13);
       --radius:24px;
     }
     *{box-sizing:border-box}
@@ -25,8 +26,8 @@
       margin:0;
       color:var(--ink);
       background:
-        radial-gradient(circle at top left, rgba(195,206,229,.55), transparent 36%),
-        radial-gradient(circle at 92% 12%, rgba(209,196,168,.34), transparent 28%),
+        radial-gradient(circle at top left, rgba(231,189,119,.38), transparent 34%),
+        radial-gradient(circle at 92% 12%, rgba(168,59,45,.12), transparent 27%),
         var(--bg);
       font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height:1.55;
@@ -36,15 +37,16 @@
     .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
     header{
       position:sticky;top:0;z-index:20;
-      background:rgba(233,230,230,.88);
+      background:rgba(255,249,235,.92);
       backdrop-filter:blur(14px);
-      border-bottom:1px solid rgba(121,138,174,.24);
+      border-bottom:3px solid var(--accent);
     }
     .nav{height:72px;display:flex;align-items:center;gap:18px}
     .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:-.02em}
     .brand-mark{
       width:38px;height:38px;border-radius:50%;
-      display:grid;place-items:center;background:var(--accent);color:white;font-size:19px
+      display:grid;place-items:center;background:var(--accent);color:#fff7e4;font-size:19px;
+      box-shadow:inset 0 0 0 2px rgba(255,249,235,.65),0 0 0 2px var(--accent)
     }
     .nav-spacer{flex:1}
     .btn{
@@ -52,15 +54,28 @@
       padding:11px 16px;border-radius:999px;font-weight:700;box-shadow:none;
     }
     .btn:hover{transform:translateY(-1px)}
-    .btn-primary{background:var(--accent);border-color:var(--accent);color:white}
+    .btn-primary{background:var(--accent);border-color:var(--accent);color:#fff9eb}
     .btn-ghost{background:transparent}
-    .hero{padding:76px 0 46px}
+    .hero{
+      position:relative;isolation:isolate;margin-top:28px;padding:86px 7% 56px;overflow:hidden;
+      border:1px solid var(--line);border-radius:34px;background:var(--paper);
+      box-shadow:var(--shadow)
+    }
+    .hero::before{
+      content:"";position:absolute;inset:0;z-index:-1;
+      background:url("russian-folk-banner.webp") center bottom/cover no-repeat;
+      opacity:.94
+    }
+    .hero::after{
+      content:"";position:absolute;inset:12px;border:1px solid rgba(168,59,45,.26);
+      border-radius:25px;pointer-events:none
+    }
     .eyebrow{
       font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:800;
       margin-bottom:14px
     }
-    h1{font-family:Georgia, "Times New Roman", serif;font-size:clamp(44px,7vw,78px);line-height:.98;margin:0;letter-spacing:-.045em;max-width:850px}
-    .hero p{max-width:700px;font-size:18px;color:var(--muted);margin:24px 0 0}
+    h1{font-family:Georgia, "Times New Roman", serif;font-size:clamp(44px,7vw,74px);line-height:.98;margin:0;letter-spacing:-.045em;max-width:720px}
+    .hero p{max-width:610px;font-size:18px;color:var(--muted);margin:24px 0 0}
     .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
     .stats{display:flex;gap:18px;flex-wrap:wrap;margin-top:38px;color:var(--muted);font-size:14px}
     .stats strong{color:var(--ink);font-size:22px;margin-right:5px}
@@ -76,7 +91,7 @@
       white-space:nowrap;border:1px solid var(--line);background:rgba(255,253,249,.72);
       border-radius:999px;padding:9px 13px;color:var(--muted);font-weight:700;font-size:14px
     }
-    .chip.active{background:var(--sage);color:white;border-color:var(--sage)}
+    .chip.active{background:var(--accent);color:white;border-color:var(--accent)}
     .section-title{display:flex;justify-content:space-between;align-items:end;gap:20px;margin:32px 0 18px}
     .section-title h2{font-family:Georgia,serif;font-size:35px;margin:0;letter-spacing:-.025em}
     .section-title p{margin:0;color:var(--muted);font-size:14px}
@@ -93,9 +108,10 @@
     .card-content{padding:22px;display:flex;flex-direction:column;flex:1}
     .card-top{display:flex;justify-content:space-between;gap:12px}
     .icon{
-      width:54px;height:54px;border-radius:18px;background:var(--accent-2);display:grid;place-items:center;font-size:26px
+      width:54px;height:54px;border-radius:50%;background:var(--sand);color:var(--accent);display:grid;place-items:center;font-size:26px;
+      border:1px solid var(--line);box-shadow:inset 0 0 0 4px var(--paper)
     }
-    .tag{font-size:12px;font-weight:800;color:#4f593c;background:rgba(112,125,86,.14);border-radius:999px;padding:7px 10px;height:max-content}
+    .tag{font-size:12px;font-weight:800;color:#5b4a21;background:rgba(231,189,119,.32);border-radius:999px;padding:7px 10px;height:max-content}
     .card h3{font-family:Georgia,serif;font-size:28px;line-height:1.05;margin:24px 0 9px;letter-spacing:-.02em}
     .card .author{color:var(--accent);font-weight:750;font-size:14px}
     .card .desc{color:var(--muted);font-size:14px;margin:9px 0 20px}
@@ -110,14 +126,14 @@
       width:min(760px,calc(100% - 26px));max-height:90vh;border:0;border-radius:28px;padding:0;
       box-shadow:0 30px 100px rgba(36,28,20,.28);background:var(--paper);color:var(--ink)
     }
-    dialog::backdrop{background:rgba(48,55,70,.50);backdrop-filter:blur(4px)}
+    dialog::backdrop{background:rgba(63,43,32,.56);backdrop-filter:blur(4px)}
     .modal-head{padding:24px 25px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;position:sticky;top:0;background:var(--paper);z-index:3}
     .modal-head h2{font-family:Georgia,serif;font-size:30px;margin:0}
     .modal-head .x{margin-left:auto;border:0;background:transparent;font-size:25px;padding:5px 10px}
     .modal-body{padding:25px}
     .recipe-title{font-family:Georgia,serif;font-size:clamp(36px,6vw,55px);line-height:1;margin:5px 0 8px}
     .recipe-meta{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 25px}
-    .recipe-meta span{background:rgba(195,206,229,.48);border-radius:999px;padding:8px 11px;color:var(--muted);font-size:13px;font-weight:700}
+    .recipe-meta span{background:rgba(231,189,119,.28);border-radius:999px;padding:8px 11px;color:var(--muted);font-size:13px;font-weight:700}
     .recipe-photo{width:100%;max-height:430px;object-fit:cover;display:block;border-radius:22px;margin:18px 0 24px;background:var(--accent-2)}
     .recipe-lead{font-size:17px;color:var(--muted);padding-bottom:22px;border-bottom:1px solid var(--line)}
     .recipe-layout{display:grid;grid-template-columns:260px 1fr;gap:34px;margin-top:24px}
@@ -126,20 +142,24 @@
     .ingredients li{margin-bottom:8px}
     .steps{margin:0;padding-left:22px}
     .steps li{padding-left:7px;margin-bottom:18px}
-    .note{margin-top:24px;padding:18px;border-radius:18px;background:rgba(209,196,168,.34);border-left:4px solid var(--sage)}
+    .note{margin-top:24px;padding:18px;border-radius:18px;background:rgba(231,189,119,.23);border-left:4px solid var(--accent);white-space:pre-line}
     .modal-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:26px;padding-top:20px;border-top:1px solid var(--line)}
     form{display:grid;gap:17px}
     .form-row{display:grid;grid-template-columns:1fr 1fr;gap:13px}
     label{display:grid;gap:7px;font-weight:750;font-size:14px}
+    .field-label{display:block;margin-bottom:7px;font-weight:750;font-size:14px}
     input,textarea,select{
       width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 13px;background:white;color:var(--ink);outline:none
     }
     input:focus,textarea:focus,select:focus{border-color:var(--accent)}
     textarea{min-height:110px;resize:vertical}
     .hint{color:var(--muted);font-weight:500;font-size:12px}
-    .photo-upload{border:1px dashed var(--accent);border-radius:18px;padding:14px;background:rgba(195,206,229,.18)}
-    .photo-upload input[type="file"]{background:var(--paper);padding:10px}
-    .photo-preview{margin-top:12px;min-height:96px;border-radius:14px;background:rgba(212,207,207,.5);display:grid;place-items:center;overflow:hidden;color:var(--muted);font-weight:500}
+    .photo-upload{border:1px dashed var(--accent);border-radius:18px;padding:14px;background:rgba(231,189,119,.16)}
+    .photo-file{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+    .photo-picker{display:inline-flex;align-items:center;gap:8px;width:max-content;padding:10px 14px;border-radius:999px;background:var(--accent);color:#fff9eb;font-weight:800;cursor:pointer}
+    .photo-picker:focus-within{outline:3px solid rgba(47,95,141,.28);outline-offset:2px}
+    .photo-status{margin-left:10px;color:var(--muted);font-weight:600;font-size:13px}
+    .photo-preview{margin-top:12px;min-height:120px;border-radius:14px;background:rgba(234,211,164,.45);display:grid;place-items:center;overflow:hidden;color:var(--muted);font-weight:500}
     .photo-preview img{width:100%;max-height:260px;object-fit:cover;display:block}
     .photo-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px}
     .photo-actions .btn{padding:8px 12px;font-size:13px}
@@ -154,7 +174,8 @@
       .wrap{padding:0 15px}
       .nav{height:66px}
       .brand-text{display:none}
-      .hero{padding:52px 0 34px}
+      .hero{margin-top:16px;padding:48px 22px 210px;background:var(--paper)}
+      .hero::before{background-size:auto 250px;background-position:center bottom}
       .hero p{font-size:16px}
       .grid{grid-template-columns:1fr}
       .section-title{align-items:start;flex-direction:column;gap:5px}
@@ -262,17 +283,20 @@
       <label>Короткое описание
         <textarea id="description" placeholder="Что это за рецепт и почему он особенный"></textarea>
       </label>
-      <label>Фотография рецепта
+      <div>
+        <span class="field-label">Фотография рецепта</span>
         <div class="photo-upload">
-          <input id="photo" type="file" accept="image/*" />
+          <label class="photo-picker" for="photo">📷 Выбрать фотографию</label>
+          <span class="photo-status" id="photoStatus">JPG, PNG или WebP</span>
+          <input class="photo-file" id="photo" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" />
           <input id="photoData" type="hidden" />
           <div class="photo-preview" id="photoPreview">Фотография пока не выбрана</div>
           <div class="photo-actions">
-            <span class="hint">Изображение автоматически уменьшится для быстрой загрузки.</span>
+            <span class="hint">Выберите фото с телефона или компьютера. Мы автоматически уменьшим его перед сохранением.</span>
             <button type="button" class="btn" id="removePhoto">Удалить фото</button>
           </div>
         </div>
-      </label>
+      </div>
       <label>Ингредиенты
         <textarea id="ingredients" required placeholder="Каждый ингредиент - с новой строки"></textarea>
         <span class="hint">Например: Мука - 300 г ↵ Яйца - 2 шт.</span>
@@ -721,6 +745,43 @@ const starterRecipes = [
       "Уберите селёдку в холод и оставьте там до подачи, чтобы лук немного промариновался, а все вкусы соединились."
     ],
     "note": "Лук нарезать именно очень тонко и выкладывать сверху одним слоем. Сначала идёт уксусный маринад, уже сверху - растительное масло. Не подавать сразу: селёдка должна постоять в холоде."
+  },
+  {
+    "id": "granola-sivan",
+    "title": "Гранола от моей израильской подруги Сиван",
+    "author": "Сиван",
+    "category": "Завтраки",
+    "time": "45 минут + остывание",
+    "icon": "☼",
+    "description": "Домашняя гранола с крупной овсянкой, орехами, семечками и мёдом. Кокос добавляется только в самом конце, а сухофрукты идут уже в полностью остывшую гранолу.",
+    "ingredients": [
+      "Овсяные хлопья - 600 г",
+      "Тыквенные семечки - 1½ чашки",
+      "Миндальные лепестки - 1 чашка, можно заменить порубленным миндалём",
+      "Грецкие орехи - 2 чашки",
+      "Кокосовое масло - ⅓ чашки, можно заменить сливочным или нейтральным растительным маслом",
+      "Мёд - ⅓ чашки",
+      "Семена чиа - 2 ст. л., можно заменить семенами льна или не добавлять",
+      "Ягоды годжи - по вкусу, можно заменить изюмом или клюквой",
+      "Крупные кокосовые хлопья или стружка - по вкусу",
+      "Соль - по вкусу",
+      "Корица - по вкусу",
+      "Мускатный орех - по вкусу"
+    ],
+    "steps": [
+      "Подготовить орехи. Грецкие орехи поломать или крупно порубить, чтобы кусочки были поменьше, но не превращались в крошку.",
+      "Смешать сухие ингредиенты. В большой миске соединить овсяные хлопья, тыквенные семечки, миндальные лепестки и грецкие орехи. Пока не добавлять чиа, годжи и кокосовые хлопья.",
+      "Добавить специи. Посолить, добавить корицу и мускатный орех по вкусу и тщательно перемешать.",
+      "Добавить мёд и масло. Кокосовое масло и мёд слегка нагреть, чтобы они стали жидкими. Влить в сухую смесь и хорошо перемешать: хлопья, орехи и семечки должны равномерно покрыться смесью.",
+      "Добавить чиа. В самом конце вмешать семена чиа. Их удобнее добавлять отдельно, потому что в общей сухой смеси они плохо распределяются. Можно просто посыпать ими гранолу уже на противне.",
+      "Выложить на противень. Равномерно распределить гранолу по противню.",
+      "Запечь первый раз. Поставить в разогретую до 180°C духовку на 20 минут.",
+      "Перемешать. Достать противень и хорошо перемешать гранолу, особенно по краям.",
+      "Запечь ещё 10 минут. Вернуть в духовку ещё на 10 минут.",
+      "Добавить кокос. Посыпать гранолу кокосовыми хлопьями и вернуть в духовку ещё примерно на 5 минут, только до лёгкого золотистого цвета.",
+      "Полностью остудить. Оставить гранолу на противне до полного остывания и только после этого добавить ягоды годжи."
+    ],
+    "note": "Годжи и любые сухофрукты не запекать, они идут в уже остывшую гранолу.\nКокос добавлять только в самом конце, потому что он быстро подгорает.\nСразу из духовки гранола может казаться мягкой, настоящий хруст появляется после остывания.\nПо овсянке лучше брать крупные хлопья средней длительности варки. Совсем грубый геркулес типа монастырского не бери, он остаётся очень жёстким!"
   }
 ];
 
@@ -744,7 +805,12 @@ function loadRecipes(){
   try{
     const raw = safeGet(STORAGE_KEY);
     const saved = raw ? JSON.parse(raw) : null;
-    if(Array.isArray(saved) && saved.length) return saved;
+    if(Array.isArray(saved) && saved.length){
+      const knownIds=new Set(saved.map(recipe=>recipe.id));
+      const merged=[...saved,...starterRecipes.filter(recipe=>!knownIds.has(recipe.id))];
+      safeSet(STORAGE_KEY,JSON.stringify(merged));
+      return merged;
+    }
   }catch(e){}
   safeSet(STORAGE_KEY, JSON.stringify(starterRecipes));
   return JSON.parse(JSON.stringify(starterRecipes));
@@ -761,6 +827,7 @@ const photoInput = document.getElementById("photo");
 const photoData = document.getElementById("photoData");
 const photoPreview = document.getElementById("photoPreview");
 const removePhotoButton = document.getElementById("removePhoto");
+const photoStatus = document.getElementById("photoStatus");
 
 function esc(s=""){
   return String(s).replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -775,16 +842,21 @@ function setPhotoPreview(src=""){
     ? `<img src="${esc(safe)}" alt="Предпросмотр фотографии рецепта">`
     : "Фотография пока не выбрана";
   removePhotoButton.hidden=!safe;
+  photoStatus.textContent=safe ? "Фото готово" : "JPG, PNG или WebP";
 }
 function compressPhoto(file){
   return new Promise((resolve,reject)=>{
+    if(file.size>25*1024*1024){
+      reject(new Error("Фотография слишком большая. Выберите файл до 25 МБ."));
+      return;
+    }
     const reader=new FileReader();
     reader.onerror=()=>reject(new Error("Не удалось прочитать фотографию"));
     reader.onload=()=>{
       const image=new Image();
-      image.onerror=()=>reject(new Error("Не удалось открыть фотографию"));
+      image.onerror=()=>reject(new Error("Не удалось открыть этот формат. Если фото в HEIC, сохраните его как JPG и попробуйте ещё раз."));
       image.onload=()=>{
-        const maxSide=1000;
+        const maxSide=840;
         const scale=Math.min(1,maxSide/Math.max(image.width,image.height));
         const width=Math.max(1,Math.round(image.width*scale));
         const height=Math.max(1,Math.round(image.height*scale));
@@ -792,10 +864,16 @@ function compressPhoto(file){
         canvas.width=width;
         canvas.height=height;
         const context=canvas.getContext("2d");
-        context.fillStyle="#fbfaf8";
+        context.fillStyle="#fff9eb";
         context.fillRect(0,0,width,height);
         context.drawImage(image,0,0,width,height);
-        resolve(canvas.toDataURL("image/jpeg",.72));
+        let quality=.72;
+        let result=canvas.toDataURL("image/jpeg",quality);
+        while(result.length>480000 && quality>.42){
+          quality-=.08;
+          result=canvas.toDataURL("image/jpeg",quality);
+        }
+        resolve(result);
       };
       image.src=reader.result;
     };
@@ -911,6 +989,7 @@ window.deleteRecipe=function(id){
 }
 form.onsubmit=(e)=>{
   e.preventDefault();
+  const previousRecipes=recipes.slice();
   const editId=document.getElementById("editId").value;
   const data={
     id:editId || ("recipe-"+Date.now()),
@@ -930,7 +1009,8 @@ form.onsubmit=(e)=>{
   }else recipes.unshift(data);
   const saved=saveRecipes();
   if(!saved){
-    alert("Не удалось сохранить рецепт. Попробуйте выбрать фотографию меньшего размера.");
+    recipes=previousRecipes;
+    alert("Не удалось сохранить рецепт: в браузере закончилось место для фотографий. Удалите фото из другого рецепта или выберите файл меньшего размера.");
     return;
   }
   formDialog.close();
@@ -948,10 +1028,12 @@ photoInput.addEventListener("change",async()=>{
     return;
   }
   try{
+    photoStatus.textContent="Обрабатываем фото...";
     setPhotoPreview(await compressPhoto(file));
   }catch(error){
     alert(error.message || "Не удалось добавить фотографию.");
     photoInput.value="";
+    setPhotoPreview("");
   }
 });
 removePhotoButton.addEventListener("click",()=>{
