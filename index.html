@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#8f2f24" />
-  <title>Наша семейная книга рецептов</title>
+  <title>Книга семейных рецептов</title>
   <style>
     :root{
       --bg:#f1e2c5;
@@ -25,12 +25,27 @@
     body{
       margin:0;
       color:var(--ink);
-      background:
-        radial-gradient(circle at top left, rgba(231,189,119,.38), transparent 34%),
-        radial-gradient(circle at 92% 12%, rgba(168,59,45,.12), transparent 27%),
-        var(--bg);
+      background:var(--bg);
       font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height:1.55;
+      min-height:100vh;
+      position:relative;
+      isolation:isolate;
+    }
+    body::before{
+      content:"";position:absolute;z-index:-2;top:72px;left:0;right:0;height:720px;
+      background:url("russian-folk-background.webp") center top/cover no-repeat;
+      -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 52%,rgba(0,0,0,.72) 68%,transparent 100%);
+      mask-image:linear-gradient(to bottom,#000 0%,#000 52%,rgba(0,0,0,.72) 68%,transparent 100%);
+    }
+    body::after{
+      content:"";position:absolute;z-index:-1;top:410px;left:0;right:0;height:360px;
+      background:linear-gradient(to bottom,rgba(241,226,197,0),rgba(241,226,197,.72) 48%,var(--bg) 90%);
+      -webkit-backdrop-filter:blur(18px);
+      backdrop-filter:blur(18px);
+      -webkit-mask-image:linear-gradient(to bottom,transparent,#000 38%,#000 100%);
+      mask-image:linear-gradient(to bottom,transparent,#000 38%,#000 100%);
+      pointer-events:none
     }
     button,input,textarea,select{font:inherit}
     button{cursor:pointer}
@@ -57,14 +72,9 @@
     .btn-primary{background:var(--accent);border-color:var(--accent);color:#fff9eb}
     .btn-ghost{background:transparent}
     .hero{
-      position:relative;isolation:isolate;margin-top:28px;padding:86px 7% 56px;overflow:hidden;
-      border:1px solid var(--line);border-radius:34px;background:var(--paper);
+      position:relative;isolation:isolate;margin-top:48px;padding:76px 7% 56px;overflow:hidden;
+      border:1px solid var(--line);border-radius:34px;background:#fff4dc;
       box-shadow:var(--shadow)
-    }
-    .hero::before{
-      content:"";position:absolute;inset:0;z-index:-1;
-      background:url("russian-folk-banner.webp") center bottom/cover no-repeat;
-      opacity:.94
     }
     .hero::after{
       content:"";position:absolute;inset:12px;border:1px solid rgba(168,59,45,.26);
@@ -171,11 +181,12 @@
       .toolbar{grid-template-columns:1fr}
     }
     @media(max-width:600px){
+      body::before{top:66px;height:560px;background-size:auto 430px;background-position:center top}
+      body::after{top:320px;height:330px}
       .wrap{padding:0 15px}
       .nav{height:66px}
       .brand-text{display:none}
-      .hero{margin-top:16px;padding:48px 22px 210px;background:var(--paper)}
-      .hero::before{background-size:auto 250px;background-position:center bottom}
+      .hero{margin-top:30px;padding:48px 22px 36px;background:#fff4dc}
       .hero p{font-size:16px}
       .grid{grid-template-columns:1fr}
       .section-title{align-items:start;flex-direction:column;gap:5px}
@@ -191,7 +202,7 @@
   <div class="wrap nav">
     <div class="brand">
       <div class="brand-mark">✦</div>
-      <div class="brand-text">Наша семейная книга</div>
+      <div class="brand-text">Книга семейных рецептов</div>
     </div>
     <div class="nav-spacer"></div>
     <button class="btn btn-primary" id="addRecipeTop">＋ Добавить рецепт</button>
@@ -201,7 +212,7 @@
 <main class="wrap">
   <section class="hero">
     <div class="eyebrow">Рецепты, которые хочется сохранить</div>
-    <h1>Наша семейная книга рецептов</h1>
+    <h1>Книга семейных рецептов</h1>
     <p>Место для блюд, которые передаются от мам, бабушек, друзей и остаются с нами надолго. Без лишней формальности - только пропорции, секреты и те самые «делай вот так».</p>
     <div class="hero-actions">
       <button class="btn btn-primary" id="addRecipeHero">Добавить новый рецепт</button>
